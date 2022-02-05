@@ -1,0 +1,76 @@
+#!/user/bin/env groovy
+
+
+import hudson.model.*
+import hudson.EnvVars
+import groovy.json.JsonSluperClassic
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import java.net.URL
+
+
+try {​​​​​​
+
+
+    node{​​​​​​
+
+
+        stage('Checkout') {​​​​​​
+            git 'https://github.com/nkheria/DevOpsClassCodes'
+        }​​​​​​
+
+
+        stage('Build') {​​​​​​
+            dir('') {​​​​​​
+                sh 'mvn -B -V -U -e clean package'
+            }​​​​​​
+        }​​​​​​
+
+
+        stage('Email') {​​​​​​
+            emailtext attachLog: true, body: 'The status of the build can be obtained from the build log attached with this mail', subject: 'The build update is: ', to: 'abc@gmail.com'
+        }​​​​​​
+
+
+        stage('Deployment'){​​​​​​
+
+
+            script{​​​​​​
+                echo "deployment"
+
+
+                sh 'cp /var/lib/jenkins/workspace/target/addressbook.war /opt/tomcat/webapps/'
+            }​​​​​​
+        }​​​​​​
+
+
+        stage('publish html report') {​​​​​​
+            echo "publishing html report"
+
+
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'index.html', reportName: 'HTML REPORT', reportTitles: ''])
+        }​​​​​​
+
+
+        stage ('clean up') {​​​​​​
+            echo "cleaning up the workspace"
+            cleanWs()
+        }​​​​​​
+
+
+    }​​​​​​
+    finally {​​​​​​
+
+
+        (currentBuild.result != "Aborted") && node("master") {​​​​​​
+            step([$class: 'Mailer',
+                notifyEveryUnstableBuild: true,
+                recipients: 'abc@gmail.com',
+                sendToIndividuals: true])
+        }​​​​​​
+        }​​​​​​
+
+
+
+
+
