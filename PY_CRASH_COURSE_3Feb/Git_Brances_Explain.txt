@@ -24,3 +24,7 @@ Git uses 2 different algorithms to perform a merge:
 fast-forward
 three-way merge
 
+git log --graph --oneline
+
+git merge --abort (Throws aways the Merge and resets files in the working tree back to previous commit before merge ever happened)
+
