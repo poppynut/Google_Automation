@@ -1,0 +1,21 @@
+What is a Branch
+================
+Basically it is a pointer to a particular commit.
+Represents an independent line of Development in a project.
+The commit it points to is the latest link in chain of development history.
+Default branch is master.
+master is generally used to represent known good state of a project.
+
+Whay do we need a  branch?
+==========================
+To enable changes to be worked on without disrupting the most current working state.
+
+git checkout -b new-feature  ( To create and checkout to a new Branch )
+
+Merging
+-------
+The term that git uses for combining branched data and history together.
+
+What happens when we merge two branches?
+Both branches are pointed at the same commit.
+
