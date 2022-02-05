@@ -19,3 +19,8 @@ The term that git uses for combining branched data and history together.
 What happens when we merge two branches?
 Both branches are pointed at the same commit.
 
+Git uses 2 different algorithms to perform a merge:
+
+fast-forward
+three-way merge
+
